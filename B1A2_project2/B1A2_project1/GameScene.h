@@ -7,6 +7,7 @@ class Monster;
 class FinalBoss;
 class InGamePanel;
 class MyPlayer;
+class ZipLine;
 
 struct LoadData
 {
@@ -44,13 +45,14 @@ public:
 public:
 	// Set Stage
 	void SetStage(int32 stage);
+
 private:
 	void SetStage1();
 	void SetStage2();
 	void SetStage3();
 	void SetFinalBossStage();
-
 	void SetStructureStageN(int32 stageNum);
+
 public:
 	// Save
 	void SaveCurData();
@@ -59,6 +61,8 @@ public:
 	void InputDeadMonsterIdAndErasePointer(int32 id) { _deadMonsterIds.push_back(id);  _monsters.erase(id); }
 
 	LoadData GetLoadData() { return _loadData; }
+
+	void ResetStructureWhenPlayerDead();
 
 public:
 	void RequestStageChange(int32 nextStage) { _pendingStage = nextStage; _hasPendingStage = true; }
@@ -137,4 +141,6 @@ private:
 	bool _hasPendingStage = false;
 
 	std::vector<Actor*> toRemove;
+
+	std::vector<ZipLine*> _zipLines;	// Player Dead시 리셋 위해 저장
 };

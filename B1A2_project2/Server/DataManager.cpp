@@ -26,6 +26,8 @@ Stat* DataManager::LoadStat()
 
 	// 필요한 Stat 전부 Load
 	stat->LoadPlayerStatFile(_dataPath);
+	stat->LoadTiredOfficeWorkerStatFile(_dataPath);
+	stat->LoadBrokenCopyMachineStatFile(_dataPath);
 
 	_stat = stat;
 

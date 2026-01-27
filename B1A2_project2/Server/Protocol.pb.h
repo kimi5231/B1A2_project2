@@ -50,12 +50,9 @@ namespace Protocol {
 class C_Move;
 struct C_MoveDefaultTypeInternal;
 extern C_MoveDefaultTypeInternal _C_Move_default_instance_;
-class S_AddPlayer;
-struct S_AddPlayerDefaultTypeInternal;
-extern S_AddPlayerDefaultTypeInternal _S_AddPlayer_default_instance_;
-class S_AddTiredOfficeWorker;
-struct S_AddTiredOfficeWorkerDefaultTypeInternal;
-extern S_AddTiredOfficeWorkerDefaultTypeInternal _S_AddTiredOfficeWorker_default_instance_;
+class S_AddObject;
+struct S_AddObjectDefaultTypeInternal;
+extern S_AddObjectDefaultTypeInternal _S_AddObject_default_instance_;
 class S_EnterGame;
 struct S_EnterGameDefaultTypeInternal;
 extern S_EnterGameDefaultTypeInternal _S_EnterGame_default_instance_;
@@ -74,8 +71,7 @@ extern S_TESTDefaultTypeInternal _S_TEST_default_instance_;
 }  // namespace Protocol
 PROTOBUF_NAMESPACE_OPEN
 template<> ::Protocol::C_Move* Arena::CreateMaybeMessage<::Protocol::C_Move>(Arena*);
-template<> ::Protocol::S_AddPlayer* Arena::CreateMaybeMessage<::Protocol::S_AddPlayer>(Arena*);
-template<> ::Protocol::S_AddTiredOfficeWorker* Arena::CreateMaybeMessage<::Protocol::S_AddTiredOfficeWorker>(Arena*);
+template<> ::Protocol::S_AddObject* Arena::CreateMaybeMessage<::Protocol::S_AddObject>(Arena*);
 template<> ::Protocol::S_EnterGame* Arena::CreateMaybeMessage<::Protocol::S_EnterGame>(Arena*);
 template<> ::Protocol::S_Move* Arena::CreateMaybeMessage<::Protocol::S_Move>(Arena*);
 template<> ::Protocol::S_MyPlayer* Arena::CreateMaybeMessage<::Protocol::S_MyPlayer>(Arena*);
@@ -558,7 +554,6 @@ class S_MyPlayer final :
   enum : int {
     kActorFieldNumber = 1,
     kObjectFieldNumber = 2,
-    kStatFieldNumber = 3,
   };
   // .Protocol.ActorInfo actor = 1;
   bool has_actor() const;
@@ -596,24 +591,6 @@ class S_MyPlayer final :
       ::Protocol::ObjectInfo* object);
   ::Protocol::ObjectInfo* unsafe_arena_release_object();
 
-  // .Protocol.PlayerStat stat = 3;
-  bool has_stat() const;
-  private:
-  bool _internal_has_stat() const;
-  public:
-  void clear_stat();
-  const ::Protocol::PlayerStat& stat() const;
-  PROTOBUF_NODISCARD ::Protocol::PlayerStat* release_stat();
-  ::Protocol::PlayerStat* mutable_stat();
-  void set_allocated_stat(::Protocol::PlayerStat* stat);
-  private:
-  const ::Protocol::PlayerStat& _internal_stat() const;
-  ::Protocol::PlayerStat* _internal_mutable_stat();
-  public:
-  void unsafe_arena_set_allocated_stat(
-      ::Protocol::PlayerStat* stat);
-  ::Protocol::PlayerStat* unsafe_arena_release_stat();
-
   // @@protoc_insertion_point(class_scope:Protocol.S_MyPlayer)
  private:
   class _Internal;
@@ -624,7 +601,6 @@ class S_MyPlayer final :
   struct Impl_ {
     ::Protocol::ActorInfo* actor_;
     ::Protocol::ObjectInfo* object_;
-    ::Protocol::PlayerStat* stat_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -632,24 +608,24 @@ class S_MyPlayer final :
 };
 // -------------------------------------------------------------------
 
-class S_AddPlayer final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Protocol.S_AddPlayer) */ {
+class S_AddObject final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Protocol.S_AddObject) */ {
  public:
-  inline S_AddPlayer() : S_AddPlayer(nullptr) {}
-  ~S_AddPlayer() override;
-  explicit PROTOBUF_CONSTEXPR S_AddPlayer(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline S_AddObject() : S_AddObject(nullptr) {}
+  ~S_AddObject() override;
+  explicit PROTOBUF_CONSTEXPR S_AddObject(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  S_AddPlayer(const S_AddPlayer& from);
-  S_AddPlayer(S_AddPlayer&& from) noexcept
-    : S_AddPlayer() {
+  S_AddObject(const S_AddObject& from);
+  S_AddObject(S_AddObject&& from) noexcept
+    : S_AddObject() {
     *this = ::std::move(from);
   }
 
-  inline S_AddPlayer& operator=(const S_AddPlayer& from) {
+  inline S_AddObject& operator=(const S_AddObject& from) {
     CopyFrom(from);
     return *this;
   }
-  inline S_AddPlayer& operator=(S_AddPlayer&& from) noexcept {
+  inline S_AddObject& operator=(S_AddObject&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -672,20 +648,20 @@ class S_AddPlayer final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const S_AddPlayer& default_instance() {
+  static const S_AddObject& default_instance() {
     return *internal_default_instance();
   }
-  static inline const S_AddPlayer* internal_default_instance() {
-    return reinterpret_cast<const S_AddPlayer*>(
-               &_S_AddPlayer_default_instance_);
+  static inline const S_AddObject* internal_default_instance() {
+    return reinterpret_cast<const S_AddObject*>(
+               &_S_AddObject_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     3;
 
-  friend void swap(S_AddPlayer& a, S_AddPlayer& b) {
+  friend void swap(S_AddObject& a, S_AddObject& b) {
     a.Swap(&b);
   }
-  inline void Swap(S_AddPlayer* other) {
+  inline void Swap(S_AddObject* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetOwningArena() != nullptr &&
@@ -698,7 +674,7 @@ class S_AddPlayer final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(S_AddPlayer* other) {
+  void UnsafeArenaSwap(S_AddObject* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -706,14 +682,14 @@ class S_AddPlayer final :
 
   // implements Message ----------------------------------------------
 
-  S_AddPlayer* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<S_AddPlayer>(arena);
+  S_AddObject* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<S_AddObject>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const S_AddPlayer& from);
+  void CopyFrom(const S_AddObject& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const S_AddPlayer& from) {
-    S_AddPlayer::MergeImpl(*this, from);
+  void MergeFrom( const S_AddObject& from) {
+    S_AddObject::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
@@ -731,15 +707,15 @@ class S_AddPlayer final :
   void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(S_AddPlayer* other);
+  void InternalSwap(S_AddObject* other);
 
   private:
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "Protocol.S_AddPlayer";
+    return "Protocol.S_AddObject";
   }
   protected:
-  explicit S_AddPlayer(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit S_AddObject(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   public:
 
@@ -755,7 +731,6 @@ class S_AddPlayer final :
   enum : int {
     kActorsFieldNumber = 1,
     kObjectsFieldNumber = 2,
-    kStatsFieldNumber = 3,
   };
   // repeated .Protocol.ActorInfo actors = 1;
   int actors_size() const;
@@ -793,25 +768,7 @@ class S_AddPlayer final :
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::ObjectInfo >&
       objects() const;
 
-  // repeated .Protocol.PlayerStat stats = 3;
-  int stats_size() const;
-  private:
-  int _internal_stats_size() const;
-  public:
-  void clear_stats();
-  ::Protocol::PlayerStat* mutable_stats(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PlayerStat >*
-      mutable_stats();
-  private:
-  const ::Protocol::PlayerStat& _internal_stats(int index) const;
-  ::Protocol::PlayerStat* _internal_add_stats();
-  public:
-  const ::Protocol::PlayerStat& stats(int index) const;
-  ::Protocol::PlayerStat* add_stats();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PlayerStat >&
-      stats() const;
-
-  // @@protoc_insertion_point(class_scope:Protocol.S_AddPlayer)
+  // @@protoc_insertion_point(class_scope:Protocol.S_AddObject)
  private:
   class _Internal;
 
@@ -821,204 +778,6 @@ class S_AddPlayer final :
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::ActorInfo > actors_;
     ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::ObjectInfo > objects_;
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PlayerStat > stats_;
-    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_Protocol_2eproto;
-};
-// -------------------------------------------------------------------
-
-class S_AddTiredOfficeWorker final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Protocol.S_AddTiredOfficeWorker) */ {
- public:
-  inline S_AddTiredOfficeWorker() : S_AddTiredOfficeWorker(nullptr) {}
-  ~S_AddTiredOfficeWorker() override;
-  explicit PROTOBUF_CONSTEXPR S_AddTiredOfficeWorker(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
-
-  S_AddTiredOfficeWorker(const S_AddTiredOfficeWorker& from);
-  S_AddTiredOfficeWorker(S_AddTiredOfficeWorker&& from) noexcept
-    : S_AddTiredOfficeWorker() {
-    *this = ::std::move(from);
-  }
-
-  inline S_AddTiredOfficeWorker& operator=(const S_AddTiredOfficeWorker& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline S_AddTiredOfficeWorker& operator=(S_AddTiredOfficeWorker&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetOwningArena() == from.GetOwningArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetOwningArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const S_AddTiredOfficeWorker& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const S_AddTiredOfficeWorker* internal_default_instance() {
-    return reinterpret_cast<const S_AddTiredOfficeWorker*>(
-               &_S_AddTiredOfficeWorker_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    4;
-
-  friend void swap(S_AddTiredOfficeWorker& a, S_AddTiredOfficeWorker& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(S_AddTiredOfficeWorker* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() != nullptr &&
-        GetOwningArena() == other->GetOwningArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() == other->GetOwningArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(S_AddTiredOfficeWorker* other) {
-    if (other == this) return;
-    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  S_AddTiredOfficeWorker* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<S_AddTiredOfficeWorker>(arena);
-  }
-  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const S_AddTiredOfficeWorker& from);
-  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const S_AddTiredOfficeWorker& from) {
-    S_AddTiredOfficeWorker::MergeImpl(*this, from);
-  }
-  private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
-  public:
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  uint8_t* _InternalSerialize(
-      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
-  void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(S_AddTiredOfficeWorker* other);
-
-  private:
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "Protocol.S_AddTiredOfficeWorker";
-  }
-  protected:
-  explicit S_AddTiredOfficeWorker(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                       bool is_message_owned = false);
-  public:
-
-  static const ClassData _class_data_;
-  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kActorsFieldNumber = 1,
-    kObjectsFieldNumber = 2,
-    kStatsFieldNumber = 3,
-  };
-  // repeated .Protocol.ActorInfo actors = 1;
-  int actors_size() const;
-  private:
-  int _internal_actors_size() const;
-  public:
-  void clear_actors();
-  ::Protocol::ActorInfo* mutable_actors(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::ActorInfo >*
-      mutable_actors();
-  private:
-  const ::Protocol::ActorInfo& _internal_actors(int index) const;
-  ::Protocol::ActorInfo* _internal_add_actors();
-  public:
-  const ::Protocol::ActorInfo& actors(int index) const;
-  ::Protocol::ActorInfo* add_actors();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::ActorInfo >&
-      actors() const;
-
-  // repeated .Protocol.ObjectInfo objects = 2;
-  int objects_size() const;
-  private:
-  int _internal_objects_size() const;
-  public:
-  void clear_objects();
-  ::Protocol::ObjectInfo* mutable_objects(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::ObjectInfo >*
-      mutable_objects();
-  private:
-  const ::Protocol::ObjectInfo& _internal_objects(int index) const;
-  ::Protocol::ObjectInfo* _internal_add_objects();
-  public:
-  const ::Protocol::ObjectInfo& objects(int index) const;
-  ::Protocol::ObjectInfo* add_objects();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::ObjectInfo >&
-      objects() const;
-
-  // repeated .Protocol.TiredOfficeWorkerStat stats = 3;
-  int stats_size() const;
-  private:
-  int _internal_stats_size() const;
-  public:
-  void clear_stats();
-  ::Protocol::TiredOfficeWorkerStat* mutable_stats(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::TiredOfficeWorkerStat >*
-      mutable_stats();
-  private:
-  const ::Protocol::TiredOfficeWorkerStat& _internal_stats(int index) const;
-  ::Protocol::TiredOfficeWorkerStat* _internal_add_stats();
-  public:
-  const ::Protocol::TiredOfficeWorkerStat& stats(int index) const;
-  ::Protocol::TiredOfficeWorkerStat* add_stats();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::TiredOfficeWorkerStat >&
-      stats() const;
-
-  // @@protoc_insertion_point(class_scope:Protocol.S_AddTiredOfficeWorker)
- private:
-  class _Internal;
-
-  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
-  typedef void InternalArenaConstructable_;
-  typedef void DestructorSkippable_;
-  struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::ActorInfo > actors_;
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::ObjectInfo > objects_;
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::TiredOfficeWorkerStat > stats_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -1074,7 +833,7 @@ class S_RemoveObject final :
                &_S_RemoveObject_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    4;
 
   friend void swap(S_RemoveObject& a, S_RemoveObject& b) {
     a.Swap(&b);
@@ -1236,7 +995,7 @@ class C_Move final :
                &_C_Move_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    5;
 
   friend void swap(C_Move& a, C_Move& b) {
     a.Swap(&b);
@@ -1309,25 +1068,44 @@ class C_Move final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kInfoFieldNumber = 1,
+    kActorFieldNumber = 1,
+    kObjectFieldNumber = 2,
   };
-  // .Protocol.ObjectInfo info = 1;
-  bool has_info() const;
+  // .Protocol.ActorInfo actor = 1;
+  bool has_actor() const;
   private:
-  bool _internal_has_info() const;
+  bool _internal_has_actor() const;
   public:
-  void clear_info();
-  const ::Protocol::ObjectInfo& info() const;
-  PROTOBUF_NODISCARD ::Protocol::ObjectInfo* release_info();
-  ::Protocol::ObjectInfo* mutable_info();
-  void set_allocated_info(::Protocol::ObjectInfo* info);
+  void clear_actor();
+  const ::Protocol::ActorInfo& actor() const;
+  PROTOBUF_NODISCARD ::Protocol::ActorInfo* release_actor();
+  ::Protocol::ActorInfo* mutable_actor();
+  void set_allocated_actor(::Protocol::ActorInfo* actor);
   private:
-  const ::Protocol::ObjectInfo& _internal_info() const;
-  ::Protocol::ObjectInfo* _internal_mutable_info();
+  const ::Protocol::ActorInfo& _internal_actor() const;
+  ::Protocol::ActorInfo* _internal_mutable_actor();
   public:
-  void unsafe_arena_set_allocated_info(
-      ::Protocol::ObjectInfo* info);
-  ::Protocol::ObjectInfo* unsafe_arena_release_info();
+  void unsafe_arena_set_allocated_actor(
+      ::Protocol::ActorInfo* actor);
+  ::Protocol::ActorInfo* unsafe_arena_release_actor();
+
+  // .Protocol.ObjectInfo object = 2;
+  bool has_object() const;
+  private:
+  bool _internal_has_object() const;
+  public:
+  void clear_object();
+  const ::Protocol::ObjectInfo& object() const;
+  PROTOBUF_NODISCARD ::Protocol::ObjectInfo* release_object();
+  ::Protocol::ObjectInfo* mutable_object();
+  void set_allocated_object(::Protocol::ObjectInfo* object);
+  private:
+  const ::Protocol::ObjectInfo& _internal_object() const;
+  ::Protocol::ObjectInfo* _internal_mutable_object();
+  public:
+  void unsafe_arena_set_allocated_object(
+      ::Protocol::ObjectInfo* object);
+  ::Protocol::ObjectInfo* unsafe_arena_release_object();
 
   // @@protoc_insertion_point(class_scope:Protocol.C_Move)
  private:
@@ -1337,7 +1115,8 @@ class C_Move final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::Protocol::ObjectInfo* info_;
+    ::Protocol::ActorInfo* actor_;
+    ::Protocol::ObjectInfo* object_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -1393,7 +1172,7 @@ class S_Move final :
                &_S_Move_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    7;
+    6;
 
   friend void swap(S_Move& a, S_Move& b) {
     a.Swap(&b);
@@ -1466,25 +1245,44 @@ class S_Move final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kInfoFieldNumber = 1,
+    kActorFieldNumber = 1,
+    kObjectFieldNumber = 2,
   };
-  // .Protocol.ObjectInfo info = 1;
-  bool has_info() const;
+  // .Protocol.ActorInfo actor = 1;
+  bool has_actor() const;
   private:
-  bool _internal_has_info() const;
+  bool _internal_has_actor() const;
   public:
-  void clear_info();
-  const ::Protocol::ObjectInfo& info() const;
-  PROTOBUF_NODISCARD ::Protocol::ObjectInfo* release_info();
-  ::Protocol::ObjectInfo* mutable_info();
-  void set_allocated_info(::Protocol::ObjectInfo* info);
+  void clear_actor();
+  const ::Protocol::ActorInfo& actor() const;
+  PROTOBUF_NODISCARD ::Protocol::ActorInfo* release_actor();
+  ::Protocol::ActorInfo* mutable_actor();
+  void set_allocated_actor(::Protocol::ActorInfo* actor);
   private:
-  const ::Protocol::ObjectInfo& _internal_info() const;
-  ::Protocol::ObjectInfo* _internal_mutable_info();
+  const ::Protocol::ActorInfo& _internal_actor() const;
+  ::Protocol::ActorInfo* _internal_mutable_actor();
   public:
-  void unsafe_arena_set_allocated_info(
-      ::Protocol::ObjectInfo* info);
-  ::Protocol::ObjectInfo* unsafe_arena_release_info();
+  void unsafe_arena_set_allocated_actor(
+      ::Protocol::ActorInfo* actor);
+  ::Protocol::ActorInfo* unsafe_arena_release_actor();
+
+  // .Protocol.ObjectInfo object = 2;
+  bool has_object() const;
+  private:
+  bool _internal_has_object() const;
+  public:
+  void clear_object();
+  const ::Protocol::ObjectInfo& object() const;
+  PROTOBUF_NODISCARD ::Protocol::ObjectInfo* release_object();
+  ::Protocol::ObjectInfo* mutable_object();
+  void set_allocated_object(::Protocol::ObjectInfo* object);
+  private:
+  const ::Protocol::ObjectInfo& _internal_object() const;
+  ::Protocol::ObjectInfo* _internal_mutable_object();
+  public:
+  void unsafe_arena_set_allocated_object(
+      ::Protocol::ObjectInfo* object);
+  ::Protocol::ObjectInfo* unsafe_arena_release_object();
 
   // @@protoc_insertion_point(class_scope:Protocol.S_Move)
  private:
@@ -1494,7 +1292,8 @@ class S_Move final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::Protocol::ObjectInfo* info_;
+    ::Protocol::ActorInfo* actor_;
+    ::Protocol::ObjectInfo* object_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -1826,319 +1625,82 @@ inline void S_MyPlayer::set_allocated_object(::Protocol::ObjectInfo* object) {
   // @@protoc_insertion_point(field_set_allocated:Protocol.S_MyPlayer.object)
 }
 
-// .Protocol.PlayerStat stat = 3;
-inline bool S_MyPlayer::_internal_has_stat() const {
-  return this != internal_default_instance() && _impl_.stat_ != nullptr;
-}
-inline bool S_MyPlayer::has_stat() const {
-  return _internal_has_stat();
-}
-inline const ::Protocol::PlayerStat& S_MyPlayer::_internal_stat() const {
-  const ::Protocol::PlayerStat* p = _impl_.stat_;
-  return p != nullptr ? *p : reinterpret_cast<const ::Protocol::PlayerStat&>(
-      ::Protocol::_PlayerStat_default_instance_);
-}
-inline const ::Protocol::PlayerStat& S_MyPlayer::stat() const {
-  // @@protoc_insertion_point(field_get:Protocol.S_MyPlayer.stat)
-  return _internal_stat();
-}
-inline void S_MyPlayer::unsafe_arena_set_allocated_stat(
-    ::Protocol::PlayerStat* stat) {
-  if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.stat_);
-  }
-  _impl_.stat_ = stat;
-  if (stat) {
-    
-  } else {
-    
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Protocol.S_MyPlayer.stat)
-}
-inline ::Protocol::PlayerStat* S_MyPlayer::release_stat() {
-  
-  ::Protocol::PlayerStat* temp = _impl_.stat_;
-  _impl_.stat_ = nullptr;
-#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
-  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
-  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  if (GetArenaForAllocation() == nullptr) { delete old; }
-#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
-  if (GetArenaForAllocation() != nullptr) {
-    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  }
-#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
-  return temp;
-}
-inline ::Protocol::PlayerStat* S_MyPlayer::unsafe_arena_release_stat() {
-  // @@protoc_insertion_point(field_release:Protocol.S_MyPlayer.stat)
-  
-  ::Protocol::PlayerStat* temp = _impl_.stat_;
-  _impl_.stat_ = nullptr;
-  return temp;
-}
-inline ::Protocol::PlayerStat* S_MyPlayer::_internal_mutable_stat() {
-  
-  if (_impl_.stat_ == nullptr) {
-    auto* p = CreateMaybeMessage<::Protocol::PlayerStat>(GetArenaForAllocation());
-    _impl_.stat_ = p;
-  }
-  return _impl_.stat_;
-}
-inline ::Protocol::PlayerStat* S_MyPlayer::mutable_stat() {
-  ::Protocol::PlayerStat* _msg = _internal_mutable_stat();
-  // @@protoc_insertion_point(field_mutable:Protocol.S_MyPlayer.stat)
-  return _msg;
-}
-inline void S_MyPlayer::set_allocated_stat(::Protocol::PlayerStat* stat) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
-  if (message_arena == nullptr) {
-    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.stat_);
-  }
-  if (stat) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
-                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(stat));
-    if (message_arena != submessage_arena) {
-      stat = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, stat, submessage_arena);
-    }
-    
-  } else {
-    
-  }
-  _impl_.stat_ = stat;
-  // @@protoc_insertion_point(field_set_allocated:Protocol.S_MyPlayer.stat)
-}
-
 // -------------------------------------------------------------------
 
-// S_AddPlayer
+// S_AddObject
 
 // repeated .Protocol.ActorInfo actors = 1;
-inline int S_AddPlayer::_internal_actors_size() const {
+inline int S_AddObject::_internal_actors_size() const {
   return _impl_.actors_.size();
 }
-inline int S_AddPlayer::actors_size() const {
+inline int S_AddObject::actors_size() const {
   return _internal_actors_size();
 }
-inline ::Protocol::ActorInfo* S_AddPlayer::mutable_actors(int index) {
-  // @@protoc_insertion_point(field_mutable:Protocol.S_AddPlayer.actors)
+inline ::Protocol::ActorInfo* S_AddObject::mutable_actors(int index) {
+  // @@protoc_insertion_point(field_mutable:Protocol.S_AddObject.actors)
   return _impl_.actors_.Mutable(index);
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::ActorInfo >*
-S_AddPlayer::mutable_actors() {
-  // @@protoc_insertion_point(field_mutable_list:Protocol.S_AddPlayer.actors)
+S_AddObject::mutable_actors() {
+  // @@protoc_insertion_point(field_mutable_list:Protocol.S_AddObject.actors)
   return &_impl_.actors_;
 }
-inline const ::Protocol::ActorInfo& S_AddPlayer::_internal_actors(int index) const {
+inline const ::Protocol::ActorInfo& S_AddObject::_internal_actors(int index) const {
   return _impl_.actors_.Get(index);
 }
-inline const ::Protocol::ActorInfo& S_AddPlayer::actors(int index) const {
-  // @@protoc_insertion_point(field_get:Protocol.S_AddPlayer.actors)
+inline const ::Protocol::ActorInfo& S_AddObject::actors(int index) const {
+  // @@protoc_insertion_point(field_get:Protocol.S_AddObject.actors)
   return _internal_actors(index);
 }
-inline ::Protocol::ActorInfo* S_AddPlayer::_internal_add_actors() {
+inline ::Protocol::ActorInfo* S_AddObject::_internal_add_actors() {
   return _impl_.actors_.Add();
 }
-inline ::Protocol::ActorInfo* S_AddPlayer::add_actors() {
+inline ::Protocol::ActorInfo* S_AddObject::add_actors() {
   ::Protocol::ActorInfo* _add = _internal_add_actors();
-  // @@protoc_insertion_point(field_add:Protocol.S_AddPlayer.actors)
+  // @@protoc_insertion_point(field_add:Protocol.S_AddObject.actors)
   return _add;
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::ActorInfo >&
-S_AddPlayer::actors() const {
-  // @@protoc_insertion_point(field_list:Protocol.S_AddPlayer.actors)
+S_AddObject::actors() const {
+  // @@protoc_insertion_point(field_list:Protocol.S_AddObject.actors)
   return _impl_.actors_;
 }
 
 // repeated .Protocol.ObjectInfo objects = 2;
-inline int S_AddPlayer::_internal_objects_size() const {
+inline int S_AddObject::_internal_objects_size() const {
   return _impl_.objects_.size();
 }
-inline int S_AddPlayer::objects_size() const {
+inline int S_AddObject::objects_size() const {
   return _internal_objects_size();
 }
-inline ::Protocol::ObjectInfo* S_AddPlayer::mutable_objects(int index) {
-  // @@protoc_insertion_point(field_mutable:Protocol.S_AddPlayer.objects)
+inline ::Protocol::ObjectInfo* S_AddObject::mutable_objects(int index) {
+  // @@protoc_insertion_point(field_mutable:Protocol.S_AddObject.objects)
   return _impl_.objects_.Mutable(index);
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::ObjectInfo >*
-S_AddPlayer::mutable_objects() {
-  // @@protoc_insertion_point(field_mutable_list:Protocol.S_AddPlayer.objects)
+S_AddObject::mutable_objects() {
+  // @@protoc_insertion_point(field_mutable_list:Protocol.S_AddObject.objects)
   return &_impl_.objects_;
 }
-inline const ::Protocol::ObjectInfo& S_AddPlayer::_internal_objects(int index) const {
+inline const ::Protocol::ObjectInfo& S_AddObject::_internal_objects(int index) const {
   return _impl_.objects_.Get(index);
 }
-inline const ::Protocol::ObjectInfo& S_AddPlayer::objects(int index) const {
-  // @@protoc_insertion_point(field_get:Protocol.S_AddPlayer.objects)
+inline const ::Protocol::ObjectInfo& S_AddObject::objects(int index) const {
+  // @@protoc_insertion_point(field_get:Protocol.S_AddObject.objects)
   return _internal_objects(index);
 }
-inline ::Protocol::ObjectInfo* S_AddPlayer::_internal_add_objects() {
+inline ::Protocol::ObjectInfo* S_AddObject::_internal_add_objects() {
   return _impl_.objects_.Add();
 }
-inline ::Protocol::ObjectInfo* S_AddPlayer::add_objects() {
+inline ::Protocol::ObjectInfo* S_AddObject::add_objects() {
   ::Protocol::ObjectInfo* _add = _internal_add_objects();
-  // @@protoc_insertion_point(field_add:Protocol.S_AddPlayer.objects)
+  // @@protoc_insertion_point(field_add:Protocol.S_AddObject.objects)
   return _add;
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::ObjectInfo >&
-S_AddPlayer::objects() const {
-  // @@protoc_insertion_point(field_list:Protocol.S_AddPlayer.objects)
+S_AddObject::objects() const {
+  // @@protoc_insertion_point(field_list:Protocol.S_AddObject.objects)
   return _impl_.objects_;
-}
-
-// repeated .Protocol.PlayerStat stats = 3;
-inline int S_AddPlayer::_internal_stats_size() const {
-  return _impl_.stats_.size();
-}
-inline int S_AddPlayer::stats_size() const {
-  return _internal_stats_size();
-}
-inline ::Protocol::PlayerStat* S_AddPlayer::mutable_stats(int index) {
-  // @@protoc_insertion_point(field_mutable:Protocol.S_AddPlayer.stats)
-  return _impl_.stats_.Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PlayerStat >*
-S_AddPlayer::mutable_stats() {
-  // @@protoc_insertion_point(field_mutable_list:Protocol.S_AddPlayer.stats)
-  return &_impl_.stats_;
-}
-inline const ::Protocol::PlayerStat& S_AddPlayer::_internal_stats(int index) const {
-  return _impl_.stats_.Get(index);
-}
-inline const ::Protocol::PlayerStat& S_AddPlayer::stats(int index) const {
-  // @@protoc_insertion_point(field_get:Protocol.S_AddPlayer.stats)
-  return _internal_stats(index);
-}
-inline ::Protocol::PlayerStat* S_AddPlayer::_internal_add_stats() {
-  return _impl_.stats_.Add();
-}
-inline ::Protocol::PlayerStat* S_AddPlayer::add_stats() {
-  ::Protocol::PlayerStat* _add = _internal_add_stats();
-  // @@protoc_insertion_point(field_add:Protocol.S_AddPlayer.stats)
-  return _add;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PlayerStat >&
-S_AddPlayer::stats() const {
-  // @@protoc_insertion_point(field_list:Protocol.S_AddPlayer.stats)
-  return _impl_.stats_;
-}
-
-// -------------------------------------------------------------------
-
-// S_AddTiredOfficeWorker
-
-// repeated .Protocol.ActorInfo actors = 1;
-inline int S_AddTiredOfficeWorker::_internal_actors_size() const {
-  return _impl_.actors_.size();
-}
-inline int S_AddTiredOfficeWorker::actors_size() const {
-  return _internal_actors_size();
-}
-inline ::Protocol::ActorInfo* S_AddTiredOfficeWorker::mutable_actors(int index) {
-  // @@protoc_insertion_point(field_mutable:Protocol.S_AddTiredOfficeWorker.actors)
-  return _impl_.actors_.Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::ActorInfo >*
-S_AddTiredOfficeWorker::mutable_actors() {
-  // @@protoc_insertion_point(field_mutable_list:Protocol.S_AddTiredOfficeWorker.actors)
-  return &_impl_.actors_;
-}
-inline const ::Protocol::ActorInfo& S_AddTiredOfficeWorker::_internal_actors(int index) const {
-  return _impl_.actors_.Get(index);
-}
-inline const ::Protocol::ActorInfo& S_AddTiredOfficeWorker::actors(int index) const {
-  // @@protoc_insertion_point(field_get:Protocol.S_AddTiredOfficeWorker.actors)
-  return _internal_actors(index);
-}
-inline ::Protocol::ActorInfo* S_AddTiredOfficeWorker::_internal_add_actors() {
-  return _impl_.actors_.Add();
-}
-inline ::Protocol::ActorInfo* S_AddTiredOfficeWorker::add_actors() {
-  ::Protocol::ActorInfo* _add = _internal_add_actors();
-  // @@protoc_insertion_point(field_add:Protocol.S_AddTiredOfficeWorker.actors)
-  return _add;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::ActorInfo >&
-S_AddTiredOfficeWorker::actors() const {
-  // @@protoc_insertion_point(field_list:Protocol.S_AddTiredOfficeWorker.actors)
-  return _impl_.actors_;
-}
-
-// repeated .Protocol.ObjectInfo objects = 2;
-inline int S_AddTiredOfficeWorker::_internal_objects_size() const {
-  return _impl_.objects_.size();
-}
-inline int S_AddTiredOfficeWorker::objects_size() const {
-  return _internal_objects_size();
-}
-inline ::Protocol::ObjectInfo* S_AddTiredOfficeWorker::mutable_objects(int index) {
-  // @@protoc_insertion_point(field_mutable:Protocol.S_AddTiredOfficeWorker.objects)
-  return _impl_.objects_.Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::ObjectInfo >*
-S_AddTiredOfficeWorker::mutable_objects() {
-  // @@protoc_insertion_point(field_mutable_list:Protocol.S_AddTiredOfficeWorker.objects)
-  return &_impl_.objects_;
-}
-inline const ::Protocol::ObjectInfo& S_AddTiredOfficeWorker::_internal_objects(int index) const {
-  return _impl_.objects_.Get(index);
-}
-inline const ::Protocol::ObjectInfo& S_AddTiredOfficeWorker::objects(int index) const {
-  // @@protoc_insertion_point(field_get:Protocol.S_AddTiredOfficeWorker.objects)
-  return _internal_objects(index);
-}
-inline ::Protocol::ObjectInfo* S_AddTiredOfficeWorker::_internal_add_objects() {
-  return _impl_.objects_.Add();
-}
-inline ::Protocol::ObjectInfo* S_AddTiredOfficeWorker::add_objects() {
-  ::Protocol::ObjectInfo* _add = _internal_add_objects();
-  // @@protoc_insertion_point(field_add:Protocol.S_AddTiredOfficeWorker.objects)
-  return _add;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::ObjectInfo >&
-S_AddTiredOfficeWorker::objects() const {
-  // @@protoc_insertion_point(field_list:Protocol.S_AddTiredOfficeWorker.objects)
-  return _impl_.objects_;
-}
-
-// repeated .Protocol.TiredOfficeWorkerStat stats = 3;
-inline int S_AddTiredOfficeWorker::_internal_stats_size() const {
-  return _impl_.stats_.size();
-}
-inline int S_AddTiredOfficeWorker::stats_size() const {
-  return _internal_stats_size();
-}
-inline ::Protocol::TiredOfficeWorkerStat* S_AddTiredOfficeWorker::mutable_stats(int index) {
-  // @@protoc_insertion_point(field_mutable:Protocol.S_AddTiredOfficeWorker.stats)
-  return _impl_.stats_.Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::TiredOfficeWorkerStat >*
-S_AddTiredOfficeWorker::mutable_stats() {
-  // @@protoc_insertion_point(field_mutable_list:Protocol.S_AddTiredOfficeWorker.stats)
-  return &_impl_.stats_;
-}
-inline const ::Protocol::TiredOfficeWorkerStat& S_AddTiredOfficeWorker::_internal_stats(int index) const {
-  return _impl_.stats_.Get(index);
-}
-inline const ::Protocol::TiredOfficeWorkerStat& S_AddTiredOfficeWorker::stats(int index) const {
-  // @@protoc_insertion_point(field_get:Protocol.S_AddTiredOfficeWorker.stats)
-  return _internal_stats(index);
-}
-inline ::Protocol::TiredOfficeWorkerStat* S_AddTiredOfficeWorker::_internal_add_stats() {
-  return _impl_.stats_.Add();
-}
-inline ::Protocol::TiredOfficeWorkerStat* S_AddTiredOfficeWorker::add_stats() {
-  ::Protocol::TiredOfficeWorkerStat* _add = _internal_add_stats();
-  // @@protoc_insertion_point(field_add:Protocol.S_AddTiredOfficeWorker.stats)
-  return _add;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::TiredOfficeWorkerStat >&
-S_AddTiredOfficeWorker::stats() const {
-  // @@protoc_insertion_point(field_list:Protocol.S_AddTiredOfficeWorker.stats)
-  return _impl_.stats_;
 }
 
 // -------------------------------------------------------------------
@@ -2196,39 +1758,39 @@ S_RemoveObject::mutable_ids() {
 
 // C_Move
 
-// .Protocol.ObjectInfo info = 1;
-inline bool C_Move::_internal_has_info() const {
-  return this != internal_default_instance() && _impl_.info_ != nullptr;
+// .Protocol.ActorInfo actor = 1;
+inline bool C_Move::_internal_has_actor() const {
+  return this != internal_default_instance() && _impl_.actor_ != nullptr;
 }
-inline bool C_Move::has_info() const {
-  return _internal_has_info();
+inline bool C_Move::has_actor() const {
+  return _internal_has_actor();
 }
-inline const ::Protocol::ObjectInfo& C_Move::_internal_info() const {
-  const ::Protocol::ObjectInfo* p = _impl_.info_;
-  return p != nullptr ? *p : reinterpret_cast<const ::Protocol::ObjectInfo&>(
-      ::Protocol::_ObjectInfo_default_instance_);
+inline const ::Protocol::ActorInfo& C_Move::_internal_actor() const {
+  const ::Protocol::ActorInfo* p = _impl_.actor_;
+  return p != nullptr ? *p : reinterpret_cast<const ::Protocol::ActorInfo&>(
+      ::Protocol::_ActorInfo_default_instance_);
 }
-inline const ::Protocol::ObjectInfo& C_Move::info() const {
-  // @@protoc_insertion_point(field_get:Protocol.C_Move.info)
-  return _internal_info();
+inline const ::Protocol::ActorInfo& C_Move::actor() const {
+  // @@protoc_insertion_point(field_get:Protocol.C_Move.actor)
+  return _internal_actor();
 }
-inline void C_Move::unsafe_arena_set_allocated_info(
-    ::Protocol::ObjectInfo* info) {
+inline void C_Move::unsafe_arena_set_allocated_actor(
+    ::Protocol::ActorInfo* actor) {
   if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.info_);
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.actor_);
   }
-  _impl_.info_ = info;
-  if (info) {
+  _impl_.actor_ = actor;
+  if (actor) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Protocol.C_Move.info)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Protocol.C_Move.actor)
 }
-inline ::Protocol::ObjectInfo* C_Move::release_info() {
+inline ::Protocol::ActorInfo* C_Move::release_actor() {
   
-  ::Protocol::ObjectInfo* temp = _impl_.info_;
-  _impl_.info_ = nullptr;
+  ::Protocol::ActorInfo* temp = _impl_.actor_;
+  _impl_.actor_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
   temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
@@ -2240,84 +1802,169 @@ inline ::Protocol::ObjectInfo* C_Move::release_info() {
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::Protocol::ObjectInfo* C_Move::unsafe_arena_release_info() {
-  // @@protoc_insertion_point(field_release:Protocol.C_Move.info)
+inline ::Protocol::ActorInfo* C_Move::unsafe_arena_release_actor() {
+  // @@protoc_insertion_point(field_release:Protocol.C_Move.actor)
   
-  ::Protocol::ObjectInfo* temp = _impl_.info_;
-  _impl_.info_ = nullptr;
+  ::Protocol::ActorInfo* temp = _impl_.actor_;
+  _impl_.actor_ = nullptr;
   return temp;
 }
-inline ::Protocol::ObjectInfo* C_Move::_internal_mutable_info() {
+inline ::Protocol::ActorInfo* C_Move::_internal_mutable_actor() {
   
-  if (_impl_.info_ == nullptr) {
-    auto* p = CreateMaybeMessage<::Protocol::ObjectInfo>(GetArenaForAllocation());
-    _impl_.info_ = p;
+  if (_impl_.actor_ == nullptr) {
+    auto* p = CreateMaybeMessage<::Protocol::ActorInfo>(GetArenaForAllocation());
+    _impl_.actor_ = p;
   }
-  return _impl_.info_;
+  return _impl_.actor_;
 }
-inline ::Protocol::ObjectInfo* C_Move::mutable_info() {
-  ::Protocol::ObjectInfo* _msg = _internal_mutable_info();
-  // @@protoc_insertion_point(field_mutable:Protocol.C_Move.info)
+inline ::Protocol::ActorInfo* C_Move::mutable_actor() {
+  ::Protocol::ActorInfo* _msg = _internal_mutable_actor();
+  // @@protoc_insertion_point(field_mutable:Protocol.C_Move.actor)
   return _msg;
 }
-inline void C_Move::set_allocated_info(::Protocol::ObjectInfo* info) {
+inline void C_Move::set_allocated_actor(::Protocol::ActorInfo* actor) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
-    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.info_);
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.actor_);
   }
-  if (info) {
+  if (actor) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
         ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
-                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(info));
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(actor));
     if (message_arena != submessage_arena) {
-      info = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, info, submessage_arena);
+      actor = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, actor, submessage_arena);
     }
     
   } else {
     
   }
-  _impl_.info_ = info;
-  // @@protoc_insertion_point(field_set_allocated:Protocol.C_Move.info)
+  _impl_.actor_ = actor;
+  // @@protoc_insertion_point(field_set_allocated:Protocol.C_Move.actor)
+}
+
+// .Protocol.ObjectInfo object = 2;
+inline bool C_Move::_internal_has_object() const {
+  return this != internal_default_instance() && _impl_.object_ != nullptr;
+}
+inline bool C_Move::has_object() const {
+  return _internal_has_object();
+}
+inline const ::Protocol::ObjectInfo& C_Move::_internal_object() const {
+  const ::Protocol::ObjectInfo* p = _impl_.object_;
+  return p != nullptr ? *p : reinterpret_cast<const ::Protocol::ObjectInfo&>(
+      ::Protocol::_ObjectInfo_default_instance_);
+}
+inline const ::Protocol::ObjectInfo& C_Move::object() const {
+  // @@protoc_insertion_point(field_get:Protocol.C_Move.object)
+  return _internal_object();
+}
+inline void C_Move::unsafe_arena_set_allocated_object(
+    ::Protocol::ObjectInfo* object) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.object_);
+  }
+  _impl_.object_ = object;
+  if (object) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Protocol.C_Move.object)
+}
+inline ::Protocol::ObjectInfo* C_Move::release_object() {
+  
+  ::Protocol::ObjectInfo* temp = _impl_.object_;
+  _impl_.object_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::Protocol::ObjectInfo* C_Move::unsafe_arena_release_object() {
+  // @@protoc_insertion_point(field_release:Protocol.C_Move.object)
+  
+  ::Protocol::ObjectInfo* temp = _impl_.object_;
+  _impl_.object_ = nullptr;
+  return temp;
+}
+inline ::Protocol::ObjectInfo* C_Move::_internal_mutable_object() {
+  
+  if (_impl_.object_ == nullptr) {
+    auto* p = CreateMaybeMessage<::Protocol::ObjectInfo>(GetArenaForAllocation());
+    _impl_.object_ = p;
+  }
+  return _impl_.object_;
+}
+inline ::Protocol::ObjectInfo* C_Move::mutable_object() {
+  ::Protocol::ObjectInfo* _msg = _internal_mutable_object();
+  // @@protoc_insertion_point(field_mutable:Protocol.C_Move.object)
+  return _msg;
+}
+inline void C_Move::set_allocated_object(::Protocol::ObjectInfo* object) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.object_);
+  }
+  if (object) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(object));
+    if (message_arena != submessage_arena) {
+      object = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, object, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.object_ = object;
+  // @@protoc_insertion_point(field_set_allocated:Protocol.C_Move.object)
 }
 
 // -------------------------------------------------------------------
 
 // S_Move
 
-// .Protocol.ObjectInfo info = 1;
-inline bool S_Move::_internal_has_info() const {
-  return this != internal_default_instance() && _impl_.info_ != nullptr;
+// .Protocol.ActorInfo actor = 1;
+inline bool S_Move::_internal_has_actor() const {
+  return this != internal_default_instance() && _impl_.actor_ != nullptr;
 }
-inline bool S_Move::has_info() const {
-  return _internal_has_info();
+inline bool S_Move::has_actor() const {
+  return _internal_has_actor();
 }
-inline const ::Protocol::ObjectInfo& S_Move::_internal_info() const {
-  const ::Protocol::ObjectInfo* p = _impl_.info_;
-  return p != nullptr ? *p : reinterpret_cast<const ::Protocol::ObjectInfo&>(
-      ::Protocol::_ObjectInfo_default_instance_);
+inline const ::Protocol::ActorInfo& S_Move::_internal_actor() const {
+  const ::Protocol::ActorInfo* p = _impl_.actor_;
+  return p != nullptr ? *p : reinterpret_cast<const ::Protocol::ActorInfo&>(
+      ::Protocol::_ActorInfo_default_instance_);
 }
-inline const ::Protocol::ObjectInfo& S_Move::info() const {
-  // @@protoc_insertion_point(field_get:Protocol.S_Move.info)
-  return _internal_info();
+inline const ::Protocol::ActorInfo& S_Move::actor() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_Move.actor)
+  return _internal_actor();
 }
-inline void S_Move::unsafe_arena_set_allocated_info(
-    ::Protocol::ObjectInfo* info) {
+inline void S_Move::unsafe_arena_set_allocated_actor(
+    ::Protocol::ActorInfo* actor) {
   if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.info_);
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.actor_);
   }
-  _impl_.info_ = info;
-  if (info) {
+  _impl_.actor_ = actor;
+  if (actor) {
     
   } else {
     
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Protocol.S_Move.info)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Protocol.S_Move.actor)
 }
-inline ::Protocol::ObjectInfo* S_Move::release_info() {
+inline ::Protocol::ActorInfo* S_Move::release_actor() {
   
-  ::Protocol::ObjectInfo* temp = _impl_.info_;
-  _impl_.info_ = nullptr;
+  ::Protocol::ActorInfo* temp = _impl_.actor_;
+  _impl_.actor_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
   temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
@@ -2329,52 +1976,135 @@ inline ::Protocol::ObjectInfo* S_Move::release_info() {
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return temp;
 }
-inline ::Protocol::ObjectInfo* S_Move::unsafe_arena_release_info() {
-  // @@protoc_insertion_point(field_release:Protocol.S_Move.info)
+inline ::Protocol::ActorInfo* S_Move::unsafe_arena_release_actor() {
+  // @@protoc_insertion_point(field_release:Protocol.S_Move.actor)
   
-  ::Protocol::ObjectInfo* temp = _impl_.info_;
-  _impl_.info_ = nullptr;
+  ::Protocol::ActorInfo* temp = _impl_.actor_;
+  _impl_.actor_ = nullptr;
   return temp;
 }
-inline ::Protocol::ObjectInfo* S_Move::_internal_mutable_info() {
+inline ::Protocol::ActorInfo* S_Move::_internal_mutable_actor() {
   
-  if (_impl_.info_ == nullptr) {
-    auto* p = CreateMaybeMessage<::Protocol::ObjectInfo>(GetArenaForAllocation());
-    _impl_.info_ = p;
+  if (_impl_.actor_ == nullptr) {
+    auto* p = CreateMaybeMessage<::Protocol::ActorInfo>(GetArenaForAllocation());
+    _impl_.actor_ = p;
   }
-  return _impl_.info_;
+  return _impl_.actor_;
 }
-inline ::Protocol::ObjectInfo* S_Move::mutable_info() {
-  ::Protocol::ObjectInfo* _msg = _internal_mutable_info();
-  // @@protoc_insertion_point(field_mutable:Protocol.S_Move.info)
+inline ::Protocol::ActorInfo* S_Move::mutable_actor() {
+  ::Protocol::ActorInfo* _msg = _internal_mutable_actor();
+  // @@protoc_insertion_point(field_mutable:Protocol.S_Move.actor)
   return _msg;
 }
-inline void S_Move::set_allocated_info(::Protocol::ObjectInfo* info) {
+inline void S_Move::set_allocated_actor(::Protocol::ActorInfo* actor) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
   if (message_arena == nullptr) {
-    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.info_);
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.actor_);
   }
-  if (info) {
+  if (actor) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
         ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
-                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(info));
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(actor));
     if (message_arena != submessage_arena) {
-      info = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, info, submessage_arena);
+      actor = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, actor, submessage_arena);
     }
     
   } else {
     
   }
-  _impl_.info_ = info;
-  // @@protoc_insertion_point(field_set_allocated:Protocol.S_Move.info)
+  _impl_.actor_ = actor;
+  // @@protoc_insertion_point(field_set_allocated:Protocol.S_Move.actor)
+}
+
+// .Protocol.ObjectInfo object = 2;
+inline bool S_Move::_internal_has_object() const {
+  return this != internal_default_instance() && _impl_.object_ != nullptr;
+}
+inline bool S_Move::has_object() const {
+  return _internal_has_object();
+}
+inline const ::Protocol::ObjectInfo& S_Move::_internal_object() const {
+  const ::Protocol::ObjectInfo* p = _impl_.object_;
+  return p != nullptr ? *p : reinterpret_cast<const ::Protocol::ObjectInfo&>(
+      ::Protocol::_ObjectInfo_default_instance_);
+}
+inline const ::Protocol::ObjectInfo& S_Move::object() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_Move.object)
+  return _internal_object();
+}
+inline void S_Move::unsafe_arena_set_allocated_object(
+    ::Protocol::ObjectInfo* object) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.object_);
+  }
+  _impl_.object_ = object;
+  if (object) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Protocol.S_Move.object)
+}
+inline ::Protocol::ObjectInfo* S_Move::release_object() {
+  
+  ::Protocol::ObjectInfo* temp = _impl_.object_;
+  _impl_.object_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::Protocol::ObjectInfo* S_Move::unsafe_arena_release_object() {
+  // @@protoc_insertion_point(field_release:Protocol.S_Move.object)
+  
+  ::Protocol::ObjectInfo* temp = _impl_.object_;
+  _impl_.object_ = nullptr;
+  return temp;
+}
+inline ::Protocol::ObjectInfo* S_Move::_internal_mutable_object() {
+  
+  if (_impl_.object_ == nullptr) {
+    auto* p = CreateMaybeMessage<::Protocol::ObjectInfo>(GetArenaForAllocation());
+    _impl_.object_ = p;
+  }
+  return _impl_.object_;
+}
+inline ::Protocol::ObjectInfo* S_Move::mutable_object() {
+  ::Protocol::ObjectInfo* _msg = _internal_mutable_object();
+  // @@protoc_insertion_point(field_mutable:Protocol.S_Move.object)
+  return _msg;
+}
+inline void S_Move::set_allocated_object(::Protocol::ObjectInfo* object) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.object_);
+  }
+  if (object) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(
+                reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(object));
+    if (message_arena != submessage_arena) {
+      object = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, object, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  _impl_.object_ = object;
+  // @@protoc_insertion_point(field_set_allocated:Protocol.S_Move.object)
 }
 
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
-// -------------------------------------------------------------------
-
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

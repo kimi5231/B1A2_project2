@@ -19,7 +19,7 @@ void Stat::LoadPlayerStatFile(std::filesystem::path dataPath)
 
 	std::string line;
 
-	Protocol::PlayerStat stat;
+	PlayerStat* stat = new PlayerStat();
 
 	if (std::getline(ifs, line))
 	{
@@ -31,28 +31,28 @@ void Stat::LoadPlayerStatFile(std::filesystem::path dataPath)
 		{
 			switch (column)
 			{
-			case 0:stat.set_hp(std::stoi(cell)); break;	// A
-			case 1: stat.set_runspeed(std::stof(cell)); break;	// B
-			case 2: stat.set_crouchspeed(std::stof(cell)); break;	// C
-			case 3: stat.set_jumpspeed(std::stof(cell)); break;	// D
-			case 4: stat.set_skillpoint(std::stoi(cell)); break;	// E
-			case 5: stat.set_natkrange(std::stoi(cell)); break;	// F
-			case 6: stat.set_nlongatkdistance(std::stoi(cell)); break;	// G
-			case 7: stat.set_knockbackdistance(std::stoi(cell)); break;	// H
-			case 8: stat.set_strongatkmultiplier(std::stof(cell)); break;	// I
-			case 9: stat.set_natkdamage(std::stoi(cell)); break;	// J
-			case 10: stat.set_skilldamage(std::stoi(cell)); break;	// K
-			case 11: stat.set_skillrange(std::stoi(cell)); break;	// L
-			case 12: stat.set_skillduration(std::stof(cell)); break;	// M
-			case 13: stat.set_skillstepdistance(std::stoi(cell)); break;	// N
+			case 0:stat->hp = std::stoi(cell); break;	// A
+			case 1: stat->runSpeed = std::stof(cell); break;	// B
+			case 2: stat->crouchSpeed = std::stof(cell); break;	// C
+			case 3: stat->jumpSpeed = std::stof(cell); break;	// D
+			case 4: stat->skillPoint = std::stoi(cell); break;	// E
+			case 5: stat->nAtkRange = std::stoi(cell); break;	// F
+			case 6: stat->nLongAtkDistance = std::stoi(cell); break;	// G
+			case 7: stat->knockBackDistance = std::stoi(cell); break;	// H
+			case 8: stat->strongAtkMultiplier = std::stof(cell); break;	// I
+			case 9: stat->nAtkDamage = std::stoi(cell); break;	// J
+			case 10: stat->skillDamage = std::stoi(cell); break;	// K
+			case 11: stat->skillRange = std::stoi(cell); break;	// L
+			case 12: stat->skillDuration = std::stof(cell); break;	// M
+			case 13: stat->skillStepDistance = std::stoi(cell); break;	// N
 			}
 			++column;
 		}
 	}
 
-	ifs.close();
-
 	_playerStat = stat;
+
+	ifs.close();
 }
 
 void Stat::LoadTiredOfficeWorkerStatFile(std::filesystem::path dataPath)
@@ -64,7 +64,7 @@ void Stat::LoadTiredOfficeWorkerStatFile(std::filesystem::path dataPath)
 
 	std::string line;
 
-	Protocol::TiredOfficeWorkerStat stat;
+	TiredOfficeWorkerStat* stat = new TiredOfficeWorkerStat();
 
 	if (std::getline(ifs, line))
 	{
@@ -76,20 +76,61 @@ void Stat::LoadTiredOfficeWorkerStatFile(std::filesystem::path dataPath)
 		{
 			switch (column)
 			{
-			case 0: stat.set_hp(std::stoi(cell)); break;	// A
-			case 1: stat.set_healtemdroprate(std::stof(cell)); break;	// B
-			case 2: stat.set_speed(std::stof(cell)); break;	// C
-			case 3: stat.set_chasespeed(std::stof(cell)); break;	// D
-			case 4: stat.set_playerdetectionx(std::stoi(cell)); break;	// E
-			case 5: stat.set_playerdetectiony(std::stoi(cell)); break;	// F
-			case 6: stat.set_knockbackdistance(std::stoi(cell)); break;	// G
-			case 7: stat.set_attackrangex(std::stoi(cell)); break;	// H
-			case 8: stat.set_attackrangey(std::stoi(cell)); break;	// I
-			case 9: stat.set_attack(std::stoi(cell)); break;	// J
-			case 10: stat.set_idletime(std::stof(cell)); break;	// K
+			case 0: stat->hp = std::stoi(cell); break;	// A
+			case 1: stat->healtemDropRate = std::stof(cell); break;	// B
+			case 2: stat->speed = std::stof(cell); break;	// C
+			case 3: stat->chaseSpeed = std::stof(cell); break;	// D
+			case 4: stat->playerDetection.x = std::stoi(cell); break;	// E
+			case 5: stat->playerDetection.y = std::stoi(cell); break;	// F
+			case 6: stat->knockBackDistance = std::stoi(cell); break;	// G
+			case 7: stat->attackRange.x = std::stoi(cell); break;	// H
+			case 8: stat->attackRange.y = std::stoi(cell); break;	// I
+			case 9: stat->attack = std::stoi(cell); break;	// J
+			case 10: stat->idleTime = std::stof(cell); break;	// K
 			}
 			++column;
 		}
 	}
+
+	_tiredOfficeWorkerStat = stat;
+
+	ifs.close();
+}
+
+void Stat::LoadBrokenCopyMachineStatFile(std::filesystem::path dataPath)
+{
+	std::filesystem::path path = dataPath / L"brokenCopyMachineStat.csv";
+
+	std::ifstream ifs;
+	ifs.open(path);
+
+	std::string line;
+
+	BrokenCopyMachineStat* stat = new BrokenCopyMachineStat();
+
+	if (std::getline(ifs, line))
+	{
+		std::istringstream lineStream(line);
+		std::string cell;
+		int column = 0;
+
+		while (std::getline(lineStream, cell, ','))
+		{
+			switch (column)
+			{
+			case 0: stat->hp = std::stoi(cell); break;	// A
+			case 1: stat->healtemDropRate = std::stof(cell); break;	// B
+			case 2: stat->attackRange = std::stoi(cell); break;	// C
+			case 3: stat->projectileSpeed = std::stof(cell); break;	// D
+			case 4: stat->projectileAttack = std::stoi(cell); break;	// E
+			case 5: stat->projectileCount = std::stoi(cell); break;	// F
+			case 6: stat->attackCoolTime = std::stof(cell); break;	// G
+			}
+			++column;
+		}
+	}
+
+	_brokenCopyMachineStat = stat;
+
 	ifs.close();
 }

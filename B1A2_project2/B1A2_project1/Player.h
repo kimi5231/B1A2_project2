@@ -1,6 +1,7 @@
 #pragma once
 #include "Creature.h"
 #include "FlipbookActor.h"
+#include "Stat.h"
 
 class Flipbook;
 class BoxCollider;
@@ -11,24 +12,6 @@ class Window;
 class FootHoldAndZipLineButton;
 class GameScene;
 class Projectile;
-
-struct PlayerStat
-{
-	int32 hp = 0; // A
-	float runSpeed = 0;	// B
-	float crouchSpeed = 0;	// C
-	float jumpSpeed = 0;	// D
-	int32 skillPoint = 0;	// E
-	int32 nAtkRange = 0;	// F
-	int32 nLongAtkDistance = 0;	// G
-	int32 knockBackDistance = 0;	// H
-	float strongAtkMultiplier = 0.f;	// I
-	int32 nAtkDamage = 0;	// J
-	int32 skillDamage = 0;	// K
-	int32 skillRange = 0;	// L
-	float skillDuration = 0;	// M
-	int32 skillStepDistance = 0;	// N
-};
 
 class Player : public Creature
 {
@@ -91,8 +74,6 @@ public:
 	void AddSkillPoint(int32 skillPoint);
 	void SubtractSkillPoint(int32 skillPoint);
 
-	void SetPlayerStat(const Protocol::PlayerStat& stat);
-
 public:
 	void SetCurrentScene(GameScene* gameScene) { _gameScene = gameScene; }		// GameScene으로 수정 필요
 	void SetCurStageNum(int32 stage) { _curStageNum = stage; }
@@ -143,7 +124,7 @@ private:
 protected:
 	bool _keyPressed = false;
 
-	PlayerStat* _playerStat = {};
+	PlayerStat* _playerStat{};
 
 	std::function<void(int)> _healthObserver;	// 체력 변화 알림 받을 함수 포인터
 	std::function<void(int)> _skillPointObserver;

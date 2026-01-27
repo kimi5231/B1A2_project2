@@ -13,10 +13,9 @@
 BrokenCopyMachine::BrokenCopyMachine()
 {
 	// Set Stat
-	BrokenCopyMachineStat* brokenCopyMachineStat = new BrokenCopyMachineStat();
-	brokenCopyMachineStat = GET_SINGLE(ResourceManager)->LoadBrokenCopyMachineStat(L"DataBase\\brokenCopyMachineStat.csv");
-	_stat = brokenCopyMachineStat;
-
+	Stat* stat = GET_SINGLE(ResourceManager)->GetStat();
+	_stat = new BrokenCopyMachineStat();
+	*_stat = stat->GetBrokenCopyMachineStat();
 	CalPixelPerSecond();
 
 	// Set Flipbook
@@ -66,7 +65,7 @@ void BrokenCopyMachine::Tick()
 {
 	Super::Tick();
 
-	TickGravity();
+	//TickGravity();
 }
 
 void BrokenCopyMachine::Render(HDC hdc)
@@ -76,34 +75,34 @@ void BrokenCopyMachine::Render(HDC hdc)
 
 void BrokenCopyMachine::TickIdle()
 {
-	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	/*float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 	_sumTime += deltaTime;
 
 	if (_sumTime >= _stat->attackCoolTime)
 	{
 		_sumTime = 0.f;
 		SetState(LONG_ATTACK);
-	}
+	}*/
 }
 
 void BrokenCopyMachine::TickLongAttack()
 {
-	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
-	_sumTime += deltaTime;
+	//float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	//_sumTime += deltaTime;
 
-	// 투사체 생성
-	if (_sumTime >= 0.3f)
-	{
-		_sumTime = 0.f;
-		CreateProjectile();
-	}
+	//// 투사체 생성
+	//if (_sumTime >= 0.3f)
+	//{
+	//	_sumTime = 0.f;
+	//	CreateProjectile();
+	//}
 
-	if (_currentProjectileCount == _stat->projectileCount)
-	{
-		_sumTime = 0.f;
-		SetState(IDLE);
-		_currentProjectileCount = 0;
-	}
+	//if (_currentProjectileCount == _stat->projectileCount)
+	//{
+	//	_sumTime = 0.f;
+	//	SetState(IDLE);
+	//	_currentProjectileCount = 0;
+	//}
 }
 
 void BrokenCopyMachine::TickHit()
@@ -132,7 +131,6 @@ void BrokenCopyMachine::TickDead()
 		std::default_random_engine dre{ rd() };
 		std::uniform_real_distribution urd{ 0.f, 1.f };
 
-		// 추후 GameScene로 변경할 예정
 		GameScene* scene = dynamic_cast<GameScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 		
 		// 아이템 드랍
@@ -260,10 +258,10 @@ void BrokenCopyMachine::CalPixelPerSecond()
 
 void BrokenCopyMachine::CreateProjectile()
 {
-	// 추후 GameScene으로 변경
 	GameScene* scene = dynamic_cast<GameScene*>(GET_SINGLE(SceneManager)->GetCurrentScene());
 
 	Paper* paper = scene->SpawnObject<Paper>({ _pos.x, _pos.y}, LAYER_PROJECTILE);
+	paper->SetDir(GetDir());
 	paper->SetSpeed(_stat->projectileSpeed);
 	paper->SetAttack(_stat->projectileAttack);
 	paper->SetRange(_stat->attackRange);

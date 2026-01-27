@@ -2,11 +2,14 @@
 #include "GameObject.h"
 #include "Player.h"
 #include "TiredOfficeWorker.h"
+#include "BrokenCopyMachine.h"
 #include "Stat.h"
 #include "Stage.h"
+#include "GameRoom.h"
+#include "ServerPacketHandler.h"
 #include "DataManager.h"
 
-atomic<uint64> GameObject::_idGenerator = 1;
+std::atomic<uint64> GameObject::_idGenerator = 1;
 
 GameObject::GameObject()
 {
@@ -16,54 +19,88 @@ GameObject::~GameObject()
 {
 }
 
-void GameObject::SetObjectInfo(Protocol::OBJECT_STATE_TYPE stat, Protocol::DIR_TYPE dir)
+void GameObject::SetState(ObjectState state)
 {
-	Protocol::ObjectInfo info;
+	if (_objectInfo.state() == state)
+		return;
 
-	info.set_dir(dir);
-	info.set_state(stat);
+	_objectInfo.set_state(state);
 
-	_info = info;
+	BroadcastMove();
+}
+
+void GameObject::SetDir(Dir dir)
+{
+	_objectInfo.set_dir(dir);
+
+	BroadcastMove();
 }
 
 PlayerRef GameObject::CreatePlayer()
 {
 	PlayerRef player = std::make_shared<Player>();
 
+	// 나중에 세이브 데이터에 맞춰 설정할 예정
 	// ActorInfo
-	player->SetActorInfo(_idGenerator++, 400, 200);
+	player->SetActorInfo(_idGenerator++, { 400, 200 });
 
 	// ObjectInfo
-	player->SetObjectInfo(Protocol::OBJECT_STATE_TYPE_IDLE, Protocol::DIR_TYPE_RIGHT);
+	player->SetState(IDLE);
+	player->SetDir(DIR_RIGHT);
 
-	// PlayerStat
+	// Client에서 보내는 stat과 비교하는 용도 (패킷 포함X)
+	// Stat
 	Stat* stat = GET_SINGLE(DataManager)->GetStat();
 	player->SetPlayerStat(stat->GetPlayerStat());
-	
+
 	return player;
 }
 
 MonsterRef GameObject::CreateMonster(FieldMonster fieldMonster)
 {
-	MonsterRef monster = std::make_shared<Monster>();
-
-	// ActorInfo
-	monster->SetActorInfo(fieldMonster.id, fieldMonster.spawnPosX, fieldMonster.spawnPosY);
-
-	// ObjectInfo
-	monster->SetObjectInfo(Protocol::OBJECT_STATE_TYPE_IDLE, fieldMonster.dir);
-
-	if (20100 <= fieldMonster.id || fieldMonster.id <= 20199)
+	// ID에 따라 몬스터 종류 구별
+	if (20100 <= fieldMonster.id && fieldMonster.id <= 20199) // TOW
 	{
-		std::shared_ptr<TiredOfficeWorker> tow = std::dynamic_pointer_cast<TiredOfficeWorker>(monster);
+		TiredOfficeWorkerRef tow = std::make_shared<TiredOfficeWorker>();
 		
-		// TiredOfficeWorkerStat
+		// ActorInfo
+		tow->SetActorInfo(fieldMonster.id, fieldMonster.spawnPos);
+
+		// ObjectInfo
+		tow->SetState(IDLE);
+		tow->SetDir(fieldMonster.dir);
+
+		// Client에서 보내는 정보와 비교하는 용도 (패킷 포함X)
 		Stat* stat = GET_SINGLE(DataManager)->GetStat();
 		tow->SetTiredOfficeWorkerStat(stat->GetTiredOfficeWorkerStat());
 		tow->SetMovingDistance(fieldMonster.movingDistance);
-		tow->SetMovementLimitX(fieldMonster.movementLimitX);
-		tow->SetMovementLimitY(fieldMonster.movementLimitY);
+		tow->SetMovementLimit(fieldMonster.movementLimit);
+		
+		return tow;
 	}
+	else if (20200 <= fieldMonster.id && fieldMonster.id <= 20299) // BCM
+	{
+		BrokenCopyMachineRef bcm = std::make_shared<BrokenCopyMachine>();
 
-	return monster;
+		// ActorInfo
+		bcm->SetActorInfo(fieldMonster.id, fieldMonster.spawnPos);
+
+		// ObjectInfo
+		bcm->SetState(IDLE);
+		bcm->SetDir(fieldMonster.dir);
+
+		// Client에서 보내는 정보와 비교하는 용도 (패킷 포함X)
+		Stat* stat = GET_SINGLE(DataManager)->GetStat();
+		bcm->SetBrokenCopyMachineStat(stat->GetBrokenCopyMachineStat());
+		return bcm;
+	}
+}
+
+void GameObject::BroadcastMove()
+{
+	if (_room)
+	{
+		SendBufferRef sendBuffer = ServerPacketHandler::Make_S_Move(_actorInfo, _objectInfo);
+		_room->Broadcast(sendBuffer);
+	}
 }

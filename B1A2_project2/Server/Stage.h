@@ -1,14 +1,13 @@
 #pragma once
+#include <filesystem>
 
 struct FieldMonster
 {
 	int32 id;	// A
-	Protocol::DIR_TYPE dir;	// B
-	float spawnPosX;	// C
-	float spawnPosY;	// D
+	Dir dir;	// B
+	Vec2 spawnPos;		// C, D
 	float movingDistance;	// E
-	float movementLimitX;	// F
-	float movementLimitY;	// G
+	Vec2 movementLimit;	// F, G
 };
 
 class Stage
@@ -19,8 +18,6 @@ public:
 
 public:
 	void LoadFieldMonster(std::filesystem::path dataPath, const std::wstring fileName);
-
-public:
 	std::vector<FieldMonster>& GetFieldMonsters() { return _fieldMonsters; }
 
 private:

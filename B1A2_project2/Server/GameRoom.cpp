@@ -8,7 +8,7 @@
 #include "DataManager.h"
 #include "Stage.h"
 
-GameRoomRef GRoom = make_shared<GameRoom>();
+GameRoomRef GRoom = std::make_shared<GameRoom>();
 
 GameRoom::GameRoom()
 {
@@ -33,6 +33,10 @@ void GameRoom::Init()
 
 void GameRoom::Update()
 {
+	for (auto& item : _monsters)
+	{
+		item.second->Update();
+	}
 }
 
 void GameRoom::EnterRoom(GameSessionRef session)
@@ -44,7 +48,7 @@ void GameRoom::EnterRoom(GameSessionRef session)
 	session->player = player;
 	player->SetSession(session);
 
-	// 입장한 client에 myplayer 정보 보내기
+	// 입장한 client에 MyPlayer 정보 보내기
 	{
 		SendBufferRef sendBuffer = ServerPacketHandler::Make_S_MyPlayer(player);
 		session->Send(sendBuffer);
@@ -52,20 +56,27 @@ void GameRoom::EnterRoom(GameSessionRef session)
 
 	// Room에 있는 모든 Object 정보를 입장한 client에 전송
 	{
-		Protocol::S_AddPlayer pkt;
+		Protocol::S_AddObject pkt;
 
 		for (auto& item : _players)
 		{
 			Protocol::ActorInfo* actorInfo = pkt.add_actors();
 			Protocol::ObjectInfo* objectInfo = pkt.add_objects();
-			Protocol::PlayerStat* playerStat = pkt.add_stats();
 
 			*actorInfo = item.second->GetActorInfo();
 			*objectInfo = item.second->GetObjectInfo();
-			*playerStat = item.second->GetPlayerStat();
 		}
 
-		SendBufferRef sendBuffer = ServerPacketHandler::Make_S_AddPlayer(pkt);
+		for (auto& item : _monsters)
+		{
+			Protocol::ActorInfo* actorInfo = pkt.add_actors();
+			Protocol::ObjectInfo* objectInfo = pkt.add_objects();
+
+			*actorInfo = item.second->GetActorInfo();
+			*objectInfo = item.second->GetObjectInfo();
+		}
+
+		SendBufferRef sendBuffer = ServerPacketHandler::Make_S_AddObject(pkt);
 		session->Send(sendBuffer);
 	}
 
@@ -77,7 +88,7 @@ void GameRoom::LeaveRoom(GameSessionRef session)
 	if (session == nullptr)
 		return;
 
-	// 살아있는지 확인
+	// Player가 존재하는 확인
 	if (session->player == nullptr)
 		return;
 
@@ -89,28 +100,32 @@ void GameRoom::AddObject(GameObjectRef object)
 	int64 id = object->GetId();
 
 	// id를 이용해 객체 타입 구분
-	if (1 <= id || id >= 100)	// Player
+	if (1 <= id && id <= 100)	// Player
 	{
 		// 신규 Player 추가
-		PlayerRef player = static_pointer_cast<Player>(object);
+		PlayerRef player = std::static_pointer_cast<Player>(object);
 		_players[id] = player;
-		
-		// 신규 Player 정보를 기존 Player들에게 전송
-		{
-			Protocol::S_AddPlayer pkt;
+	}
+	else // Monster
+	{
+		// 신규 몬스터 추가
+		MonsterRef monster = std::static_pointer_cast<Monster>(object);
+		_monsters[id] = monster;
+	}
 
-			Protocol::ActorInfo* actorInfo = pkt.add_actors();
-			Protocol::ObjectInfo* objectInfo = pkt.add_objects();
-			Protocol::PlayerStat* playerStat = pkt.add_stats();
+	// 신규 Object 정보를 기존 Player들에게 전송
+	{
+		Protocol::S_AddObject pkt;
 
-			// 값을 수정
-			*actorInfo = player->GetActorInfo();
-			*objectInfo = player->GetObjectInfo();
-			*playerStat = player->GetPlayerStat();
+		Protocol::ActorInfo* actorInfo = pkt.add_actors();
+		Protocol::ObjectInfo* objectInfo = pkt.add_objects();
 
-			SendBufferRef sendBuffer = ServerPacketHandler::Make_S_AddPlayer(pkt);
-			Broadcast(sendBuffer);
-		}
+		// 값을 수정
+		*actorInfo = object->GetActorInfo();
+		*objectInfo = object->GetObjectInfo();
+
+		SendBufferRef sendBuffer = ServerPacketHandler::Make_S_AddObject(pkt);
+		Broadcast(sendBuffer);
 	}
 	
 	// 신규 Object가 현재 존재하는 Room 기록
@@ -146,5 +161,39 @@ void GameRoom::Broadcast(SendBufferRef& sendBuffer)
 	for (auto& item : _players)
 	{
 		item.second->GetSession()->Send(sendBuffer);
+	}
+}
+
+GameObjectRef GameRoom::FindObject(int32 id)
+{
+	if (1 <= id && id <= 100)
+	{
+		if (_players[id])
+			return _players[id];
+	}
+
+	return nullptr;
+}
+
+void GameRoom::Handle_C_Move(Protocol::C_Move& pkt)
+{
+	const Protocol::ActorInfo& actorInfo = pkt.actor();
+	const Protocol::ObjectInfo& objectInfo = pkt.object();
+
+	// object가 존재하는지 확인
+	uint32 id = actorInfo.id();
+	GameObjectRef object = FindObject(id);
+	if (!object)
+		return;
+
+	// 제대로 된 정보인지 판단하는 코드 필요
+
+	// 제대로 된 정보라면 기록
+	object->SetActorInfo(actorInfo);
+	object->SetObjectInfo(objectInfo);
+	
+	{
+		SendBufferRef sendBuffer = ServerPacketHandler::Make_S_Move(actorInfo, objectInfo);
+		Broadcast(sendBuffer);
 	}
 }

@@ -7,7 +7,6 @@
 #include "Sprite.h"
 #include "SpriteActor.h"
 #include "Actor.h"
-#include "Player.h"
 #include "SoundManager.h"
 #include "Sound.h"
 #include "Tilemap.h"
@@ -69,6 +68,8 @@ void GameScene::Init()
 	LoadUI();
 	//LoadSound();
 
+	GET_SINGLE(ResourceManager)->LoadStat();
+
 	// 스테이지 설정
 	if (GET_SINGLE(SceneManager)->GetIsContinue())
 	{
@@ -82,27 +83,27 @@ void GameScene::Init()
 	}
 
 	// Inventory
-	{
-		Inventory* inventory = new Inventory();
-		_player->AddComponent(inventory);
+	//{
+	//	Inventory* inventory = new Inventory();
+	//	_player->AddComponent(inventory);
 
-		inventory->SetOwner(_player);
+	//	inventory->SetOwner(_player);
 
-		// Update에서 inventory의 멤버 변수에 접근하기 위해
-		_inventory = inventory;
-	}
+	//	// Update에서 inventory의 멤버 변수에 접근하기 위해
+	//	_inventory = inventory;
+	//}
 
 	// InGame UI
 	InGamePanel* panel = new InGamePanel();
-	panel->SetPlayer(_player);
+	//panel->SetPlayer(_player);
 	AddPanel(panel);
 
 	// player의 체력 변경 시 UI 업데이트 등록
-	_player->SetHealthObserver([panel](int health) {  if (panel) panel->UpdateHealthPoint(health); });
-	_player->SetSkillPointObserver([panel](int skillPoint) {  if (panel) panel->UpdateSkillPoint(skillPoint); });
+	//_player->SetHealthObserver([panel](int health) {  if (panel) panel->UpdateHealthPoint(health); });
+	//_player->SetSkillPointObserver([panel](int skillPoint) {  if (panel) panel->UpdateSkillPoint(skillPoint); });
 
 	// 현재 Scene 정보 넣기 (세이브 포인트 정보 저장 위해)
-	_player->SetCurrentScene(this);
+	//_player->SetCurrentScene(this);
 
 	// Announcemet
 	//{
@@ -1614,52 +1615,52 @@ void GameScene::SetStage1()
 	// Player
 	{
 		// Player가 없다면 생성
-		if (!_player)
+		/*if (!_player)
 		{
 			MyPlayer* player = SpawnObject<MyPlayer>(1, { 200, 400 }, LAYER_PLAYER);
 			_player = player;
 		}
 
-		_player->SetCurStageNum(_curStageNum);
+		_player->SetCurStageNum(_curStageNum);*/
 	}
 
 	// Monster
-	{
-		Stage* stage = GET_SINGLE(ResourceManager)->GetStage(L"Stage1_FieldMonster");
-		const std::vector<StageInfo>& infos = stage->GetInfos();
+	//{
+	//	Stage* stage = GET_SINGLE(ResourceManager)->GetStage(L"Stage1_FieldMonster");
+	//	const std::vector<StageInfo>& infos = stage->GetInfos();
 
-		for (const StageInfo& info : infos)
-		{
-			// TOW
-			if (info.id > 20100 && info.id <= 20199)
-			{
-				if (std::find(_deadMonsterIds.begin(), _deadMonsterIds.end(), info.id) != _deadMonsterIds.end())
-					continue;
+	//	for (const StageInfo& info : infos)
+	//	{
+	//		// TOW
+	//		if (info.id > 20100 && info.id <= 20199)
+	//		{
+	//			if (std::find(_deadMonsterIds.begin(), _deadMonsterIds.end(), info.id) != _deadMonsterIds.end())
+	//				continue;
 
-				TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>(info.id, info.spawnPos, LAYER_MONSTER);
-				TOW->SetMonsterId(info.id);
-				TOW->SetSpawnDir(info.dir);
-				TOW->SetSpawnPos(info.spawnPos);
-				TOW->SetMoveDistance(info.movingDistance);
-				TOW->SetMovementLimit(info.movementLimit);
-				_monsters[info.id] = TOW;
-				continue;
-			}
+	//			TiredOfficeWorker* TOW = SpawnObject<TiredOfficeWorker>(info.id, info.spawnPos, LAYER_MONSTER);
+	//			TOW->SetMonsterId(info.id);
+	//			TOW->SetSpawnDir(info.dir);
+	//			TOW->SetSpawnPos(info.spawnPos);
+	//			TOW->SetMoveDistance(info.movingDistance);
+	//			TOW->SetMovementLimit(info.movementLimit);
+	//			_monsters[info.id] = TOW;
+	//			continue;
+	//		}
 
-			// BCM
-			if (info.id > 20200 && info.id <= 20299)
-			{
-				if (std::find(_deadMonsterIds.begin(), _deadMonsterIds.end(), info.id) != _deadMonsterIds.end())
-					continue;
+	//		// BCM
+	//		if (info.id > 20200 && info.id <= 20299)
+	//		{
+	//			if (std::find(_deadMonsterIds.begin(), _deadMonsterIds.end(), info.id) != _deadMonsterIds.end())
+	//				continue;
 
-				BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>(info.id, info.spawnPos, LAYER_MONSTER);
-				BCM->SetMonsterId(info.id);
-				BCM->SetDir(info.dir);
-				_monsters[info.id] = BCM;
-				continue;
-			}
-		}
-	}
+	//			BrokenCopyMachine* BCM = SpawnObject<BrokenCopyMachine>(info.id, info.spawnPos, LAYER_MONSTER);
+	//			BCM->SetMonsterId(info.id);
+	//			BCM->SetDir(info.dir);
+	//			_monsters[info.id] = BCM;
+	//			continue;
+	//		}
+	//	}
+	//}
 
 	// Item
 	{
@@ -1674,7 +1675,7 @@ void GameScene::SetStage1()
 	}
 
 	// Structure
-	SetStructureStageN(1);
+	//SetStructureStageN(1);
 
 	// LoadData 적용
 	if (GET_SINGLE(SceneManager)->GetIsContinue())
@@ -1999,14 +2000,14 @@ void GameScene::SetFinalBossStage()
 	// Player
 	{
 		// Player가 없다면 생성
-		if (!_player)
+		/*if (!_player)
 		{
 			MyPlayer* player = SpawnObject<MyPlayer>({ 200, 520 }, LAYER_PLAYER);
 			_player = player;
 		}
 
 		_player->SetPos({ 200, 520 });
-		_player->SetCurStageNum(_curStageNum);
+		_player->SetCurStageNum(_curStageNum);*/
 	}
 
 	// FinalBoss
@@ -2067,6 +2068,8 @@ void GameScene::SetStructureStageN(int32 stageNum)
 			ZipLine* zipLine = SpawnObject<ZipLine>({ info.spawnPos }, LAYER_STRUCTURE);
 
 			// 시작 - 끝 위치
+			zipLine->SetInitialBeginPos({ info.zipLineStartPos });
+			zipLine->SetInitialEndPos({ info.zipLineEndPos });
 			zipLine->SetBeginPos({ info.zipLineStartPos });
 			zipLine->SetEndPos({ info.zipLineEndPos });
 
@@ -2091,6 +2094,7 @@ void GameScene::SetStructureStageN(int32 stageNum)
 				zipLine->SetZipLineRenderType(ZipLineRenderType::Line);
 
 			zipLine->SetPlayer(_player);
+			_zipLines.push_back(zipLine);
 		}
 		else if (info.name == L"DestructibleObject")
 		{
@@ -2258,6 +2262,19 @@ void GameScene::LoadGameData()
 	}
 
 	file.close();
+}
+
+void GameScene::ResetStructureWhenPlayerDead()
+{
+	for (ZipLine* zipLine : _zipLines)
+	{
+		if (!zipLine)
+			continue;
+
+		zipLine->SetBeginPos(zipLine->GetInitialBeginPos());
+		zipLine->SetEndPos(zipLine->GetInitialEndPos());
+		zipLine->SetMidPos({ 0, 0 });
+	}
 }
 
 void GameScene::SetSceneState()

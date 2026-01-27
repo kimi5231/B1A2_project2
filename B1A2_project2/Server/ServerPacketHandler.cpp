@@ -3,47 +3,39 @@
 #include "BufferReader.h"
 #include "BufferWriter.h"
 #include "Player.h"
+#include "GameSession.h"
+#include "GameRoom.h"
 
-void ServerPacketHandler::HandlePacket(BYTE* buffer, int32 len)
+void ServerPacketHandler::HandlePacket(GameSessionRef session, BYTE* buffer, int32 len)
 {
 	BufferReader br(buffer, len);
 
 	PacketHeader header;
+	// 패킷 헤더 읽어오기
 	br.Peek(&header);
 
+	// 헤더 id에 따라 처리
 	switch (header.id)
 	{
+	case C_Move:
+		Handle_C_Move(session, buffer, len);
+		break;
 	default:
 		break;
 	}
 }
 
-SendBufferRef ServerPacketHandler::Make_S_TEST(uint64 id, uint32 hp, uint16 attack, vector<BuffData> buffs)
+void ServerPacketHandler::Handle_C_Move(GameSessionRef session, BYTE* buffer, int32 len)
 {
-	Protocol::S_TEST pkt;
+	PacketHeader* header = (PacketHeader*)buffer;
+	uint16 size = header->size;
 
-	pkt.set_id(id);
-	pkt.set_hp(hp);
-	pkt.set_attack(attack);
+	Protocol::C_Move pkt;
+	pkt.ParseFromArray(&header[1], size - sizeof(PacketHeader));
 
-	{
-		Protocol::BuffData* data = pkt.add_buffs();
-		data->set_buffid(100);
-		data->set_remaintime(1.2f);
-		{
-			data->add_victims(10);
-		}
-	}
-	{
-		Protocol::BuffData* data = pkt.add_buffs();
-		data->set_buffid(200);
-		data->set_remaintime(2.2f);
-		{
-			data->add_victims(20);
-		}
-	}
-
-	return MakeSendBuffer(pkt, S_TEST);
+	GameRoomRef room = session->gameRoom.lock();
+	if (room)
+		room->Handle_C_Move(pkt);
 }
 
 SendBufferRef ServerPacketHandler::Make_S_EnterGame()
@@ -56,9 +48,9 @@ SendBufferRef ServerPacketHandler::Make_S_EnterGame()
 	return MakeSendBuffer(pkt, S_EnterGame);
 }
 
-SendBufferRef ServerPacketHandler::Make_S_AddPlayer(const Protocol::S_AddPlayer& pkt)
+SendBufferRef ServerPacketHandler::Make_S_AddObject(const Protocol::S_AddObject& pkt)
 {
-	return MakeSendBuffer(pkt, S_AddPlayer);
+	return MakeSendBuffer(pkt, S_AddObject);
 }
 
 SendBufferRef ServerPacketHandler::Make_S_RemoveObject(const Protocol::S_RemoveObject& pkt)
@@ -72,11 +64,22 @@ SendBufferRef ServerPacketHandler::Make_S_MyPlayer(const PlayerRef& player)
 
 	Protocol::ActorInfo* actorInfo = pkt.mutable_actor();
 	Protocol::ObjectInfo* objectInfo = pkt.mutable_object();
-	Protocol::PlayerStat* playerStat = pkt.mutable_stat();
 
 	*actorInfo = player->GetActorInfo();
 	*objectInfo = player->GetObjectInfo();
-	*playerStat = player->GetPlayerStat();
 
 	return MakeSendBuffer(pkt, S_MyPlayer);
+}
+
+SendBufferRef ServerPacketHandler::Make_S_Move(const Protocol::ActorInfo& actor, const Protocol::ObjectInfo& object)
+{
+	Protocol::S_Move pkt;
+
+	Protocol::ActorInfo* actorInfo = pkt.mutable_actor();
+	Protocol::ObjectInfo* objectInfo = pkt.mutable_object();
+	
+	*actorInfo = actor;
+	*objectInfo = object;
+
+	return MakeSendBuffer(pkt, S_Move);
 }

@@ -34,7 +34,7 @@ protected:
 	virtual void TickRoaming() {};
 	virtual void TickDash() {};
 	virtual void TickReturn() {};
-	virtual void TickRETURN_IDLE() {};
+	virtual void TickReturnIdle() {};
 	virtual void TickOn() {};
 	virtual void TickOn2() {};
 	virtual void TickReady() {};
@@ -54,6 +54,9 @@ public:
 	void SetDir(Dir dir);
 	Dir GetDir() { return _info.dir(); }
 
+	void SetObjectInfo(Protocol::ObjectInfo info) { _info = info; }
+	Protocol::ObjectInfo GetObjectInfo() { return _info; }
+
 protected:
 	Protocol::ObjectInfo _info{};
 
@@ -62,4 +65,7 @@ protected:
 
 	bool _isGround = true;
 	bool _isAir = false;
+
+	// 데이터 업데이트가 필요한지 판단하는 플래그
+	bool _dirtyFlag = false;
 };

@@ -1,15 +1,22 @@
 #pragma once
 #include "Actor.h"
+#include "Stat.h"
 
-class GameObject : public Actor, public enable_shared_from_this<GameObject>
+class GameObject : public Actor, public std::enable_shared_from_this<GameObject>
 {
 public:
 	GameObject();
 	virtual ~GameObject();
 
 public:
-	void SetObjectInfo(Protocol::OBJECT_STATE_TYPE stat, Protocol::DIR_TYPE dir);
-	Protocol::ObjectInfo GetObjectInfo() { return _info; }
+	void SetState(ObjectState state);
+	ObjectState GetState() { return _objectInfo.state(); }
+
+	void SetDir(Dir dir);
+	Dir GetDir() { return _objectInfo.dir(); }
+
+	void SetObjectInfo(Protocol::ObjectInfo info) { _objectInfo = info; }
+	Protocol::ObjectInfo GetObjectInfo() { return _objectInfo; }
 
 	void SetRoom(GameRoomRef room) { _room = room; }
 
@@ -18,9 +25,12 @@ public:
 	static MonsterRef CreateMonster(class FieldMonster fieldMonster);
 
 public:
-	Protocol::ObjectInfo _info;
+	void BroadcastMove();
+
+public:
 	GameRoomRef _room;
 
-private:
-	static atomic<uint64> _idGenerator;
+protected:
+	Protocol::ObjectInfo _objectInfo;
+	static std::atomic<uint64> _idGenerator;
 };

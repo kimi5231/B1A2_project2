@@ -31,6 +31,8 @@ void MyPlayer::BeginPlay()
 void MyPlayer::Tick()
 {
 	Super::Tick();
+
+	SyncToServer();
 }
 
 void MyPlayer::Render(HDC hdc)
@@ -63,6 +65,7 @@ void MyPlayer::TickIdle()
 
 		SetState(JUMP);
 
+		// ?
 		_ySpeed = -_playerStat->jumpSpeed;
 	}
 	else if (GET_SINGLE(InputManager)->GetButton(KeyType::S))
@@ -103,10 +106,7 @@ void MyPlayer::TickMove()
 {
 	Super::TickMove();
 
-	/*if (GetDialogue()->GetState() == DialogueState::Running || GetDialogue()->GetState() == DialogueState::Wait)
-		return;
-
-	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	/*float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 	static float sumTime = 0.0f;
 
 	sumTime += deltaTime;*/
@@ -152,7 +152,17 @@ void MyPlayer::TickMove()
 	}
 	else if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::RightMouse))	// Skill
 	{
-		SetState(SKILL_READY);
+		if (GetSkillPoint() >= 3)
+		{
+			SubtractSkillPoint(3);
+
+			_skillTimer = 0.f;
+
+			_leftInputCount = 0;
+			_rightInputCount = 0;
+
+			SetState(SKILL_READY);
+		}
 	}
 }
 
@@ -335,4 +345,13 @@ void MyPlayer::TickHit()
 void MyPlayer::TickDead()
 {
 	Super::TickDead();
+}
+
+void MyPlayer::SyncToServer()
+{
+	if (_dirtyFlag == false)
+		return;
+
+	SendBufferRef sendBuffer = ClientPacketHandler::Make_C_Move();
+	GET_SINGLE(NetworkManager)->SendPacket(sendBuffer);
 }

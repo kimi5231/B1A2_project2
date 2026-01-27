@@ -13,10 +13,9 @@
 TiredOfficeWorker::TiredOfficeWorker()
 {
 	// Set Stat
-	TiredOfficeWorkerStat* tiredOfficeWorkerStat = new TiredOfficeWorkerStat();
-	tiredOfficeWorkerStat = GET_SINGLE(ResourceManager)->LoadTiredOfficeWorkerStat(L"DataBase\\tiredOfficeWorkerStat.csv");
-	_stat = tiredOfficeWorkerStat;
-
+	Stat* stat = GET_SINGLE(ResourceManager)->GetStat();
+	_stat = new TiredOfficeWorkerStat();
+	*_stat = stat->GetTiredOfficeWorkerStat();
 	CalPixelPerSecond();
 
 	// Set Flipbook
@@ -35,8 +34,8 @@ TiredOfficeWorker::TiredOfficeWorker()
 		_flipbookRoaming[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorkerRoamingLeft");
 		_flipbookReturn[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorkerRoamingRight");
 		_flipbookReturn[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorkerRoamingLeft");
-		_flipbookRETURN_IDLE[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorkerIdleRight");
-		_flipbookRETURN_IDLE[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorkerIdleLeft");
+		_flipbookReturnIdle[DIR_RIGHT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorkerIdleRight");
+		_flipbookReturnIdle[DIR_LEFT] = GET_SINGLE(ResourceManager)->GetFlipbook(L"FB_TiredOfficeWorkerIdleLeft");
 	}
 
 	// Collider Component
@@ -89,9 +88,11 @@ void TiredOfficeWorker::BeginPlay()
 
 void TiredOfficeWorker::Tick()
 {
+	return;
+
 	Super::Tick();
 
-	TickGravity();
+	//TickGravity();
 }
 
 void TiredOfficeWorker::Render(HDC hdc)
@@ -129,7 +130,7 @@ void TiredOfficeWorker::TickCloseAttack()
 		GET_SINGLE(CollisionManager)->AddCollider(collider);
 		AddComponent(collider);
 	}
-	
+
 	// 마지막 공격 모션일 때
 	if (GetIdx() == 4)
 	{
@@ -286,7 +287,7 @@ void TiredOfficeWorker::TickReturn()
 	}
 }
 
-void TiredOfficeWorker::TickRETURN_IDLE()
+void TiredOfficeWorker::TickReturnIdle()
 {
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 	_sumTime += deltaTime;
@@ -330,7 +331,7 @@ void TiredOfficeWorker::UpdateAnimation()
 		_collider->SetSize({ 50, 81 });
 		break;
 	case RETURN_IDLE:
-		SetFlipbook(_flipbookRETURN_IDLE[_info.dir()]);
+		SetFlipbook(_flipbookReturnIdle[_info.dir()]);
 		_collider->SetSize({ 34, 80 });
 		break;
 	}
